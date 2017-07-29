@@ -53,9 +53,9 @@ ADD run      /etc/service/bitcoind/run
 RUN chmod +x /etc/service/bitcoind/run
 
 service for testnet
-RUN mkdir        /etc/service/bitcoind_testnet
-ADD run_testnet /etc/service/bitcoind_testnet/run
-RUN chmod +x     /etc/service/bitcoind_testnet/run
+#RUN mkdir        /etc/service/bitcoind_testnet
+#ADD run_testnet /etc/service/bitcoind_testnet/run
+#RUN chmod +x     /etc/service/bitcoind_testnet/run
 
 # remove source & build files
 RUN rm -rf ~/source
