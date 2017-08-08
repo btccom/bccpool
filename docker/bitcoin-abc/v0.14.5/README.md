@@ -25,6 +25,7 @@ git clone https://github.com/btccom/bccpool.git
 cd bccpool/docker/bitcoin-abc/v0.14.5
 
 # If your server is in China, please check "Dockerfile" and uncomment some lines.
+# If you want to enable testnet, please uncomment several lines behind `# service for testnet`
 
 # build
 docker build -t bitcoin-abc:0.14.5 .
@@ -63,6 +64,7 @@ blockmaxsize=1000000
 ```
 # start docker
 docker run -it -v /work/bitcoin-abc:/root/.bitcoin --name bitcoin-abc -p 8333:8333 -p 8332:8332 -p 8331:8331 --restart always -d bitcoin-abc:0.14.5
+#docker run -it -v /work/bitcoin-abc:/root/.bitcoin --name bitcoin-abc -p 8333:8333 -p 8332:8332 -p 8331:8331 -p 18333:18333 -p 18332:18332 -p 18331:18331 --restart always -d bitcoin-abc:0.14.5
 
 # login
 docker exec -it bitcoin-abc /bin/bash
