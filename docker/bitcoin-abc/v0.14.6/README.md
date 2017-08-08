@@ -21,7 +21,7 @@ service docker status
 ```
 cd /work
 
-git clone https://github.com/btccom/bccpool.git
+git clone git@github.com:btccom/bccpool.git
 cd bccpool/docker/bitcoin-abc/v0.14.6
 
 # If your server is in China, please check "Dockerfile" and uncomment some lines.
