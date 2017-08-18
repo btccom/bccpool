@@ -34,8 +34,8 @@ The broker's id is `1`.
 broker.id=1
 
 # increate message size limit
-message.max.bytes=20000000
-replica.fetch.max.bytes=30000000
+message.max.bytes=60000000
+replica.fetch.max.bytes=80000000
 
 log.dirs=/work/kafka-logs
 listeners=PLAINTEXT://10.0.0.4:9092
