@@ -66,6 +66,7 @@ edit conf file `vim /etc/supervisor/conf.d/kafka.conf`:
 
 ```
 [program:kafka]
+environment=KAFKA_HEAP_OPTS="-Xmx2G -Xms1G"
 directory=/work/kafka
 command=/work/kafka/bin/kafka-server-start.sh /work/kafka/config/server.properties
 autostart=true
