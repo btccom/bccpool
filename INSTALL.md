@@ -10,7 +10,7 @@ If you are the first time build btcpool, you could run `bash install/install_btc
 
 ```
 cd /work
-wget https://raw.githubusercontent.com/btccom/btcpool/master/install/install_btcpool.sh
+wget https://raw.githubusercontent.com/btccom/bccpool/master/install/install_btcpool.sh
 bash ./install_btcpool.sh
 ```
 
@@ -71,7 +71,7 @@ make install
 
 ```
 mkdir -p /work && cd /work
-git clone https://github.com/btccom/btcpool.git
+git clone https://github.com/btccom/bccpool.git btcpool
 cd /work/btcpool
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
@@ -107,10 +107,10 @@ cd /work/kafka
 ./bin/kafka-topics.sh --create --topic NMCSolvedShare --zookeeper 10.0.0.1:2181,10.0.0.2:2181,10.0.0.3:2181 --replication-factor 2 --partitions 1
 ./bin/kafka-topics.sh --create --topic CommonEvents   --zookeeper 10.0.0.1:2181,10.0.0.2:2181,10.0.0.3:2181 --replication-factor 2 --partitions 1
 
-# do not keep 'RawGbt' message more than 12 hours
-./bin/kafka-topics.sh --zookeeper 10.0.0.1:2181,10.0.0.2:2181,10.0.0.3:2181 --alter --topic RawGbt       --config retention.ms=43200000
-# 'CommonEvents': 24 hours
-./bin/kafka-topics.sh --zookeeper 10.0.0.1:2181,10.0.0.2:2181,10.0.0.3:2181 --alter --topic CommonEvents --config retention.ms=86400000
+# do not keep 'RawGbt' message more than 6 hours
+./bin/kafka-topics.sh --zookeeper 10.0.0.1:2181,10.0.0.2:2181,10.0.0.3:2181 --alter --topic RawGbt       --config retention.ms=21600000
+# 'CommonEvents': 12 hours
+./bin/kafka-topics.sh --zookeeper 10.0.0.1:2181,10.0.0.2:2181,10.0.0.3:2181 --alter --topic CommonEvents --config retention.ms=43200000
 ```
 
 Check kafka topics stutus:
