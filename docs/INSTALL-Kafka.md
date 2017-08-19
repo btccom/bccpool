@@ -34,8 +34,8 @@ The broker's id is `1`.
 broker.id=1
 
 # increate message size limit
-message.max.bytes=20000000
-replica.fetch.max.bytes=30000000
+message.max.bytes=60000000
+replica.fetch.max.bytes=80000000
 
 log.dirs=/work/kafka-logs
 listeners=PLAINTEXT://10.0.0.4:9092
@@ -66,6 +66,7 @@ edit conf file `vim /etc/supervisor/conf.d/kafka.conf`:
 
 ```
 [program:kafka]
+environment=KAFKA_HEAP_OPTS="-Xmx2G -Xms1G"
 directory=/work/kafka
 command=/work/kafka/bin/kafka-server-start.sh /work/kafka/config/server.properties
 autostart=true
