@@ -56,7 +56,7 @@ dbcache=1000
 
 # use 1MB block when call GBT
 # Miners should not change blockmaxsize to blockmaxweight at this time.
-blockmaxsize=1000000
+blockmaxsize=8000000
 ```
 
 ## Start Docker Container
