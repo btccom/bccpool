@@ -54,8 +54,8 @@ rpcallowip=10.0.0.0/8
 # use 1G memory for utxo, depends on your machine's memory
 dbcache=1000
 
-# use 1MB block when call GBT
-# Miners should not change blockmaxsize to blockmaxweight at this time.
+# use 8MB block when call GBT
+# The blockmaxsize should be between 1000001 and 8000000.
 blockmaxsize=8000000
 ```
 
