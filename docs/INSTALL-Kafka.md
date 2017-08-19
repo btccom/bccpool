@@ -16,11 +16,11 @@ apt-get install -y default-jre
 ```
 mkdir /root/source
 cd /root/source
-wget http://ftp.cuhk.edu.hk/pub/packages/apache.org/kafka/0.10.0.0/kafka_2.11-0.10.0.0.tgz
+wget http://muug.ca/mirror/apache-dist/kafka/0.11.0.0/kafka_2.11-0.11.0.0.tgz
  
 mkdir -p /work/kafka
 cd /work/kafka
-tar -zxf /root/source/kafka_2.11-0.10.0.0.tgz --strip 1
+tar -zxf /root/source/kafka_2.11-0.11.0.0.tgz --strip 1
 ```
 
 **edit conf**
@@ -32,6 +32,7 @@ The broker's id is `1`.
 ```
 # The id of the broker. This must be set to a unique integer for each broker.
 broker.id=1
+offsets.topic.replication.factor=3
 
 # increate message size limit
 message.max.bytes=60000000
