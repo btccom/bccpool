@@ -50,7 +50,7 @@
 class Server;
 class StratumJobEx;
 
-
+/*
 //////////////////////////////// SessionIDManager //////////////////////////////
 // DO NOT CHANGE
 #define MAX_SESSION_INDEX_SERVER   0x00FFFFFEu   // 16777214
@@ -81,7 +81,7 @@ public:
   bool allocSessionId(uint32_t *sessionID);
   void freeSessionId(uint32_t sessionId);
 };
-
+*/
 
 
 ////////////////////////////////// JobRepository ///////////////////////////////
@@ -243,7 +243,7 @@ public:
   const int32_t kShareAvgSeconds_;
   JobRepository *jobRepository_;
   UserInfo *userInfo_;
-  SessionIDManager *sessionIDManager_;
+  //SessionIDManager *sessionIDManager_;
 
 public:
   Server(const int32_t shareAvgSeconds);

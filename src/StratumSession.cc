@@ -410,7 +410,6 @@ void StratumSession::handleRequest_Subscribe(const string &idStr,
     responseError(idStr, StratumError::UNKNOWN);
     return;
   }
-  state_ = SUBSCRIBED;
 
   //
   //  params[0] = client version     [optional]
@@ -419,10 +418,21 @@ void StratumSession::handleRequest_Subscribe(const string &idStr,
   // client request eg.:
   //  {"id": 1, "method": "mining.subscribe", "params": ["bfgminer/4.4.0-32-gac4e9b3", "01ad557d"]}
   //
-  if (jparams.children()->size() >= 1) {
-    clientAgent_ = jparams.children()->at(0).str().substr(0, 30);  // 30 is max len
-    clientAgent_ = filterWorkerName(clientAgent_);
+  // For working with StratumSwitcher, the ExtraNonce1 must be provided as param 2.
+  //
+  if (jparams.children()->size() < 2) {
+    responseError(idStr, StratumError::ILLEGAL_PARARMS);
+    return;
   }
+
+  state_ = SUBSCRIBED;
+
+  clientAgent_ = jparams.children()->at(0).str().substr(0, 30);  // 30 is max len
+  clientAgent_ = filterWorkerName(clientAgent_);
+
+  string extraNonce1Str = jparams.children()->at(1).str().substr(0, 8);  // 8 is max len
+  sscanf(extraNonce1Str.c_str(), "%x", &extraNonce1_); // convert hex to int
+
 
   //  result[0] = 2-tuple with name of subscribed notification and subscription ID.
   //              Theoretically it may be used for unsubscribing, but obviously miners won't use it.

@@ -34,7 +34,7 @@
 
 #include "utilities_js.hpp"
 
-
+/*
 //////////////////////////////// SessionIDManager //////////////////////////////
 SessionIDManager::SessionIDManager(const uint8_t serverId) :
 serverId_(serverId), count_(0), allocIdx_(0)
@@ -83,7 +83,7 @@ void SessionIDManager::freeSessionId(uint32_t sessionId) {
   sessionIds_.set(idx, false);
   count_--;
 }
-
+*/
 
 ////////////////////////////////// JobRepository ///////////////////////////////
 JobRepository::JobRepository(const char *kafkaBrokers,
@@ -705,7 +705,7 @@ kafkaProducerNamecoinSolvedShare_(nullptr),
 kafkaProducerCommonEvents_(nullptr),
 isEnableSimulator_(false), isSubmitInvalidBlock_(false),
 kShareAvgSeconds_(shareAvgSeconds),
-jobRepository_(nullptr), userInfo_(nullptr), sessionIDManager_(nullptr)
+jobRepository_(nullptr), userInfo_(nullptr)/*, sessionIDManager_(nullptr)*/
 {
 }
 
@@ -737,9 +737,9 @@ Server::~Server() {
   if (userInfo_ != nullptr) {
     delete userInfo_;
   }
-  if (sessionIDManager_ != nullptr) {
+  /*if (sessionIDManager_ != nullptr) {
     delete sessionIDManager_;
-  }
+  }*/
 }
 
 bool Server::setup(const char *ip, const unsigned short port,
@@ -782,7 +782,7 @@ bool Server::setup(const char *ip, const unsigned short port,
     return false;
   }
 
-  sessionIDManager_ = new SessionIDManager(serverId);
+  //sessionIDManager_ = new SessionIDManager(serverId);
 
   // kafkaProducerShareLog_
   {
@@ -911,7 +911,7 @@ void Server::sendMiningNotifyToAll(shared_ptr<StratumJobEx> exJobPtr) {
     StratumSession *conn = itr->second;  // alias
 
     if (conn->isDead()) {
-      sessionIDManager_->freeSessionId(conn->getSessionId());
+      //sessionIDManager_->freeSessionId(conn->getSessionId());
       delete conn;
       itr = connections_.erase(itr);
     } else {
@@ -951,10 +951,10 @@ void Server::listenerCallback(struct evconnlistener* listener,
   uint32_t sessionID = 0u;
 
   // can't alloc session Id
-  if (server->sessionIDManager_->allocSessionId(&sessionID) == false) {
+  /*if (server->sessionIDManager_->allocSessionId(&sessionID) == false) {
     close(fd);
     return;
-  }
+  }*/
 
   bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE|BEV_OPT_THREADSAFE);
   if(bev == nullptr) {
