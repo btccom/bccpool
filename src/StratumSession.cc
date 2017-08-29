@@ -433,6 +433,18 @@ void StratumSession::handleRequest_Subscribe(const string &idStr,
   string extraNonce1Str = jparams.children()->at(1).str().substr(0, 8);  // 8 is max len
   sscanf(extraNonce1Str.c_str(), "%x", &extraNonce1_); // convert hex to int
 
+  // receive miner's IP from stratumSwitcher
+  if (jparams.children()->size() >= 3) {
+    clientIpInt_ = htonl(jparams.children()->at(2).uint32());
+
+    // ipv4
+    clientIp_.resize(INET_ADDRSTRLEN);
+    struct in_addr addr;
+    addr.s_addr = clientIpInt_;
+    clientIp_ = inet_ntop(AF_INET, &addr, (char *)clientIp_.data(), (socklen_t)clientIp_.size());
+    LOG(INFO) << "client real IP: " << clientIp_;
+  }
+
 
   //  result[0] = 2-tuple with name of subscribed notification and subscription ID.
   //              Theoretically it may be used for unsubscribing, but obviously miners won't use it.
