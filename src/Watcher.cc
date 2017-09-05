@@ -199,7 +199,7 @@ void ClientContainer::runThreadStratumJobConsume() {
       return;
     }
 
-    LOG(INFO) << "[POOL] stratum job received, height: " << sjob->height_
+    DLOG(INFO) << "[POOL] stratum job received, height: " << sjob->height_
               << ", prevhash: " << sjob->prevHash_.ToString()
               << ", nBits: " << sjob->nBits_;
 
@@ -470,7 +470,7 @@ bool PoolWatchClient::handleMessage() {
 }
 
 void PoolWatchClient::handleStratumMessage(const string &line) {
-  LOG(INFO) << "<" << poolName_ << "> UpPoolWatchClient recv(" << line.size() << "): " << line;
+  DLOG(INFO) << "<" << poolName_ << "> UpPoolWatchClient recv(" << line.size() << "): " << line;
 
   JsonNode jnode;
   if (!JsonNode::parse(line.data(), line.data() + line.size(), jnode)) {
