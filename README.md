@@ -1,4 +1,4 @@
-BTC Pool
+BTCPool for Bitcoin Cash
 ==================
 
 BTCPool is backend system of [https://pool.btc.com](https://pool.btc.com).
@@ -7,7 +7,7 @@ The pool backend work with Bitcoin Cash.
 
 Note: This is still a testbed and work in progress, all things could be changed.
 
-See Also: [BTCPool backend of Bitcoin](https://github.com/btccom/btcpool).
+See Also: [BTCPool for Bitcoin](https://github.com/btccom/btcpool).
 
 ## Architecture
 
