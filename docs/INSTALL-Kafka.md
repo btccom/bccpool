@@ -29,9 +29,15 @@ tar -zxf /root/source/kafka_2.11-0.11.0.0.tgz --strip 1
 
 The broker's id is `1`.
 
+For tester: if you have only one kafka, set `offsets.topic.replication.factor=1`.
+
+If the broker number less than `offsets.topic.replication.factor`, high-level kafka consumer may not work properly, which means that `sharelogger` cannot obtain any share from kafka.
+
 ```
 # The id of the broker. This must be set to a unique integer for each broker.
 broker.id=1
+
+# The replication factor for the offsets topic.
 offsets.topic.replication.factor=3
 
 # increate message size limit
