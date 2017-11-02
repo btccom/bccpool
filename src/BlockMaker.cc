@@ -557,7 +557,7 @@ void BlockMaker::consumeSovledShare(rd_kafka_message_t *rkmessage) {
 
   // save to DB, using thread
   saveBlockToDBNonBlocking(foundBlock, blkHeader,
-                           newblk.vtx[0]->GetValueOut(),  // coinbase value
+                           newblk.vtx[0]->GetValueOut().GetSatoshis(),  // coinbase value
                            blockHex.length()/2);
 }
 

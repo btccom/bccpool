@@ -18,10 +18,10 @@
 #define CLIENT_VERSION_MAJOR 0
 
 /* Minor version */
-#define CLIENT_VERSION_MINOR 14
+#define CLIENT_VERSION_MINOR 16
 
 /* Build revision */
-#define CLIENT_VERSION_REVISION 5
+#define CLIENT_VERSION_REVISION 0
 
 /* Copyright holder(s) before %s replacement */
 #define COPYRIGHT_HOLDERS "The %s developers"
@@ -150,6 +150,18 @@
    don't. */
 #define HAVE_DECL_STRNLEN 1
 
+/* Define to 1 if you have the declaration of `__builtin_clz', and to 0 if you
+   don't. */
+#define HAVE_DECL___BUILTIN_CLZ 1
+
+/* Define to 1 if you have the declaration of `__builtin_clzl', and to 0 if
+   you don't. */
+#define HAVE_DECL___BUILTIN_CLZL 1
+
+/* Define to 1 if you have the declaration of `__builtin_clzll', and to 0 if
+   you don't. */
+#define HAVE_DECL___BUILTIN_CLZLL 1
+
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
 
@@ -164,6 +176,9 @@
 
 /* Define to 1 if the system has the `visibility' function attribute */
 #define HAVE_FUNC_ATTRIBUTE_VISIBILITY 1
+
+/* Define this symbol if the BSD getentropy system call is available */
+/* #undef HAVE_GETENTROPY */
 
 /* Define to 1 if you have the <inttypes.h> header file. */
 #define HAVE_INTTYPES_H 1
@@ -282,8 +297,14 @@
 /* Define to 1 if you have the <string.h> header file. */
 #define HAVE_STRING_H 1
 
+/* Define this symbol if the BSD sysctl(KERN_ARND) is available */
+/* #undef HAVE_SYSCTL_ARND */
+
 /* Define to 1 if you have the <sys/endian.h> header file. */
 /* #undef HAVE_SYS_ENDIAN_H */
+
+/* Define this symbol if the Linux getrandom system call is available */
+#define HAVE_SYS_GETRANDOM 1
 
 /* Define to 1 if you have the <sys/prctl.h> header file. */
 #define HAVE_SYS_PRCTL_H 1
@@ -319,16 +340,16 @@
 #define PACKAGE_NAME "Bitcoin ABC"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Bitcoin ABC 0.14.5"
+#define PACKAGE_STRING "Bitcoin ABC 0.16.0"
 
 /* Define to the one symbol short name of this package. */
-#define PACKAGE_TARNAME "bitcoin"
+#define PACKAGE_TARNAME "bitcoin-abc"
 
 /* Define to the home page for this package. */
 #define PACKAGE_URL "https://bitcoinabc.org/"
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.14.5"
+#define PACKAGE_VERSION "0.16.0"
 
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */

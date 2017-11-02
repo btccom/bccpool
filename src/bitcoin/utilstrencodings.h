@@ -15,8 +15,8 @@
 
 #define BEGIN(a) ((char *)&(a))
 #define END(a) ((char *)&((&(a))[1]))
-#define UBEGIN(a) ((unsigned char *)&(a))
-#define UEND(a) ((unsigned char *)&((&(a))[1]))
+#define UBEGIN(a) ((uint8_t *)&(a))
+#define UEND(a) ((uint8_t *)&((&(a))[1]))
 #define ARRAYLEN(array) (sizeof(array) / sizeof((array)[0]))
 
 /** Used by SanitizeString() */
@@ -37,19 +37,17 @@ enum SafeChars {
  */
 std::string SanitizeString(const std::string &str,
                            int rule = SAFE_CHARS_DEFAULT);
-std::vector<unsigned char> ParseHex(const char *psz);
-std::vector<unsigned char> ParseHex(const std::string &str);
+std::vector<uint8_t> ParseHex(const char *psz);
+std::vector<uint8_t> ParseHex(const std::string &str);
 signed char HexDigit(char c);
 bool IsHex(const std::string &str);
-std::vector<unsigned char> DecodeBase64(const char *p,
-                                        bool *pfInvalid = nullptr);
+std::vector<uint8_t> DecodeBase64(const char *p, bool *pfInvalid = nullptr);
 std::string DecodeBase64(const std::string &str);
-std::string EncodeBase64(const unsigned char *pch, size_t len);
+std::string EncodeBase64(const uint8_t *pch, size_t len);
 std::string EncodeBase64(const std::string &str);
-std::vector<unsigned char> DecodeBase32(const char *p,
-                                        bool *pfInvalid = nullptr);
+std::vector<uint8_t> DecodeBase32(const char *p, bool *pfInvalid = nullptr);
 std::string DecodeBase32(const std::string &str);
-std::string EncodeBase32(const unsigned char *pch, size_t len);
+std::string EncodeBase32(const uint8_t *pch, size_t len);
 std::string EncodeBase32(const std::string &str);
 
 std::string i64tostr(int64_t n);
@@ -102,7 +100,7 @@ std::string HexStr(const T itbegin, const T itend, bool fSpaces = false) {
                                     '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
     rv.reserve((itend - itbegin) * 3);
     for (T it = itbegin; it < itend; ++it) {
-        unsigned char val = (unsigned char)(*it);
+        uint8_t val = uint8_t(*it);
         if (fSpaces && it != itbegin) rv.push_back(' ');
         rv.push_back(hexmap[val >> 4]);
         rv.push_back(hexmap[val & 15]);
@@ -143,5 +141,40 @@ template <typename T> bool TimingResistantEqual(const T &a, const T &b) {
  * error will trigger.
  */
 bool ParseFixedPoint(const std::string &val, int decimals, int64_t *amount_out);
+
+/**
+ * Convert from one power-of-2 number base to another.
+ *
+ * If padding is enabled, this always return true. If not, then it returns true
+ * of all the bits of the input are encoded in the output.
+ */
+template <int frombits, int tobits, bool pad, typename O, typename I>
+bool ConvertBits(O &out, I it, I end) {
+    size_t acc = 0;
+    size_t bits = 0;
+    constexpr size_t maxv = (1 << tobits) - 1;
+    constexpr size_t max_acc = (1 << (frombits + tobits - 1)) - 1;
+    while (it != end) {
+        acc = ((acc << frombits) | *it) & max_acc;
+        bits += frombits;
+        while (bits >= tobits) {
+            bits -= tobits;
+            out.push_back((acc >> bits) & maxv);
+        }
+        ++it;
+    }
+
+    // We have remaining bits to encode but do not pad.
+    if (!pad && bits) {
+        return false;
+    }
+
+    // We have remaining bits to encode so we do pad.
+    if (pad && bits) {
+        out.push_back((acc << (tobits - bits)) & maxv);
+    }
+
+    return true;
+}
 
 #endif // BITCOIN_UTILSTRENCODINGS_H
