@@ -16,7 +16,7 @@ API_KEY="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 # api endpoint
 MURL="https://api.opsgenie.com/v1/json/heartbeat/send"
 # error log
-LOG=/var/log/opsgenie-monitor-namecoind.log
+LOG=/var/log/opsgenie-monitor-bitcoind.log
 
 BITCOIND_RPC="bitcoin-cli "
 #WANIP=`curl -sL https://ip.btc.com`
@@ -42,6 +42,6 @@ if [[ $CONNS -ne 0 ]]; then
 
   echo "$result"
 else
-  echo "[$DATE] namecoind's connections is 0: $RPCINFO" >>$LOG
+  echo "[$DATE] bitcoind's connections is 0: $RPCINFO" >>$LOG
   echo "$RPCINFO"
 fi
