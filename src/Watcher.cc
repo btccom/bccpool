@@ -22,6 +22,7 @@
  THE SOFTWARE.
  */
 #include "Watcher.h"
+#include "Bitcoin.h"
 
 #include <arpa/inet.h>
 #include <cinttypes>
@@ -34,7 +35,6 @@
 
 #include "bitcoin/chainparams.h"
 #include "bitcoin/utilstrencodings.h"
-#include "bitcoin/added_functions.h"
 
 static
 bool tryReadLine(string &line, struct bufferevent *bufev) {

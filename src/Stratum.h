@@ -26,6 +26,7 @@
 
 #include "Common.h"
 #include "Utils.h"
+#include "Bitcoin.h"
 
 #include <arpa/inet.h>
 #include <netinet/in.h>

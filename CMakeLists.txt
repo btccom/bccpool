@@ -6,20 +6,26 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 #
 # cmake -DCMAKE_BUILD_TYPE=Debug ..
 # cmake -DCMAKE_BUILD_TYPE=Release ..
+# 
+# Release is default.
 #
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release
+        CACHE STRING "Set build type to Debug or Release (default Release)" FORCE)
+endif()
+
 message("CMAKE_BUILD_TYPE = ${CMAKE_BUILD_TYPE}")
+
 IF(CMAKE_BUILD_TYPE MATCHES Debug)
   message("Debug build.")
   set(CMAKE_CXX_FLAGS "-g -O0 -Wall")
-ELSEIF(CMAKE_BUILD_TYPE MATCHES Release)
+ELSE()
   message("Release build.")
   set(CMAKE_CXX_FLAGS "-O2 -Wall")
-ELSE()
-  message("Some other build type.")
 ENDIF()
 
 
-# add a macro that needed by codes copied from bitcoinABC
+# add a macro that needed by Bitcoin source code
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_CONFIG_H")
 
 
@@ -27,7 +33,48 @@ set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_C_COMPILER "gcc")
 set(CMAKE_CXX_COMPILER_ARG1 "-std=c++0x ")
 
-set(secp256k1_DIR "${CMAKE_CURRENT_BINARY_DIR}/../src/bitcoin/secp256k1")
+
+#
+# Bitcoin Path
+#
+message("BITCOIN_SRC = ${BITCOIN_SRC}")
+if (NOT EXISTS "${BITCOIN_SRC}/src/version.h")
+  message(FATAL_ERROR "Bitcoin source code not exists!")
+endif()
+
+# create a link to bitcoin source code
+execute_process(WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" COMMAND rm src/bitcoin)
+execute_process(WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}" COMMAND ln -s ${BITCOIN_SRC}/src src/bitcoin)
+
+
+#
+# Bitcoin libs
+#
+set(bitcoin_LIBRARIES
+  "${BITCOIN_SRC}/src/libbitcoin_common.a"
+  "${BITCOIN_SRC}/src/libbitcoin_consensus.a"
+  "${BITCOIN_SRC}/src/libbitcoin_util.a"
+  "${BITCOIN_SRC}/src/crypto/libbitcoin_crypto.a")
+
+list(GET bitcoin_LIBRARIES 0 bitcoin_LIBRARIE)
+if (NOT EXISTS ${bitcoin_LIBRARIE})
+  message(STATUS "build bitcoin...")
+  execute_process(WORKING_DIRECTORY "${BITCOIN_SRC}" COMMAND ./autogen.sh)
+  execute_process(WORKING_DIRECTORY "${BITCOIN_SRC}" COMMAND ./configure --disable-wallet --disable-tests)
+  execute_process(WORKING_DIRECTORY "${BITCOIN_SRC}" COMMAND make)
+endif()
+
+foreach(bitcoin_LIBRARIE ${bitcoin_LIBRARIES})
+  if (NOT EXISTS ${bitcoin_LIBRARIE})
+    message(FATAL_ERROR "${bitcoin_LIBRARIE} not exists!")
+  endif()
+endforeach()
+
+
+#
+# secp256k1
+#
+set(secp256k1_DIR "${BITCOIN_SRC}/src/secp256k1")
 set(secp256k1_LIBRARIES "${secp256k1_DIR}/.libs/libsecp256k1.a")
 if (NOT EXISTS ${secp256k1_LIBRARIES})
   message(STATUS "build secp256k1...")
@@ -35,6 +82,11 @@ if (NOT EXISTS ${secp256k1_LIBRARIES})
   execute_process(WORKING_DIRECTORY "${secp256k1_DIR}" COMMAND ./configure --enable-module-recovery)
   execute_process(WORKING_DIRECTORY "${secp256k1_DIR}" COMMAND make)
 endif()
+
+if (NOT EXISTS ${secp256k1_LIBRARIES})
+  message(FATAL_ERROR "secp256k1 not exists!")
+endif()
+
 
 find_package(OpenSSL)
 if(NOT OPENSSL_FOUND)
@@ -84,10 +136,10 @@ endif(NOT KAFKA_FOUND)
 execute_process(COMMAND mysql_config --libs_r OUTPUT_VARIABLE MYSQL_LIB OUTPUT_STRIP_TRAILING_WHITESPACE)
 execute_process(COMMAND mysql_config --include OUTPUT_VARIABLE MYSQL_INCLUDE OUTPUT_STRIP_TRAILING_WHITESPACE)
 
-include_directories(src test src/bitcoin src/bitcoin/secp256k1/include ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${LIBZMQ_INCLUDE_DIR} ${GLOG_INCLUDE_DIRS} ${LIBEVENT_INCLUDE_DIR} ${MYSQL_INCLUDE})
-set(THIRD_LIBRARIES ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${Boost_LIBRARIES} ${LIBCONFIGPP_LIBRARY} ${LIBZMQ_LIBRARIES} ${GLOG_LIBRARIES} ${CURL_LIBRARIES} ${ZOOKEEPER_LIBRARIES} ${KAFKA_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} pthread mysqlclient gmp)
+include_directories(src test src/bitcoin src/bitcoin/config src/bitcoin/secp256k1/include ${OPENSSL_INCLUDE_DIR} ${Boost_INCLUDE_DIRS} ${LIBZMQ_INCLUDE_DIR} ${GLOG_INCLUDE_DIRS} ${LIBEVENT_INCLUDE_DIR} ${MYSQL_INCLUDE})
+set(THIRD_LIBRARIES ${bitcoin_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${OPENSSL_SSL_LIBRARY} ${Boost_LIBRARIES} ${LIBCONFIGPP_LIBRARY} ${LIBZMQ_LIBRARIES} ${GLOG_LIBRARIES} ${CURL_LIBRARIES} ${ZOOKEEPER_LIBRARIES} ${KAFKA_LIBRARIES} ${LIBEVENT_LIB} ${LIBEVENT_PTHREADS_LIB} ${secp256k1_LIBRARIES} pthread mysqlclient gmp)
 
-file(GLOB LIB_SOURCES src/*.cc src/bitcoin/*.cpp src/bitcoin/consensus/*.cpp src/bitcoin/crypto/*.cpp src/bitcoin/primitives/*.cpp src/bitcoin/script/*.cpp src/bitcoin/support/*.cpp)
+file(GLOB LIB_SOURCES src/*.cc)
 add_library(btcpool STATIC ${LIB_SOURCES})
 
 file(GLOB_RECURSE TEST_SOURCES test/*.cc)
