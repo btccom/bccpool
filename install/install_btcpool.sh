@@ -48,8 +48,8 @@ make install
 
 # btcpool
 mkdir -p /work && cd /work
-git clone https://github.com/btccom/btcpool.git
-cd /work/btcpool
+git clone https://github.com/btccom/bccpool.git
+cd /work/bccpool
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j $CPUS
