@@ -7,7 +7,7 @@
 # @since 2016-08
 #
 
-cd /work/btcpool/build
+cd /work/bccpool/build
 
 # blkmaker
 if [ ! -d "run_blkmaker" ]; then

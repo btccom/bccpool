@@ -71,7 +71,7 @@ make
 make install
 ```
 
-### btcpool
+### bccpool
 
 ```
 mkdir -p /work && cd /work
@@ -86,7 +86,7 @@ make
 
 ---
 
-## Init btcpool
+## Init bccpool
 
 Now create folder for btcpool, if you are going to run all service in one machine you could run `install/init_folders.sh` as below.
 
@@ -248,14 +248,14 @@ $ supervisorctl
 > status
 ```
 
-## Upgrade btcpool
+## Upgrade bccpool
 
 Check release note and upgrade guide. Maybe add some config options to config file or change something of database table. 
 
 Get the latest codes and rebuild:
 
 ```
-cd /work/btcpool/build
+cd /work/bccpool/build
 git pull
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make
