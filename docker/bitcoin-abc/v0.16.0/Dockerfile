@@ -27,6 +27,8 @@ RUN cd ~/source \
   && tar zxf v0.16.0.tar.gz && cd bitcoin-abc-0.16.0 \
   && ./autogen.sh \
   && ./configure --disable-wallet --disable-tests \
+  #service for testnet
+  #&& ./configure --disable-wallet \
   && make && make install
   #&& make -j$(nproc) && make install
 
