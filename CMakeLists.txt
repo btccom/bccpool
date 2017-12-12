@@ -189,9 +189,17 @@ install(TARGETS
         DESTINATION
             ${POOL__INSTALL_PREFIX}/build)
 
+install(FILES
+            INSTALL.md
+            LICENSE
+            README.md
+        DESTINATION
+            ${POOL__INSTALL_PREFIX})
+
 install(DIRECTORY
             docs
             install
+            docker
         DESTINATION
             ${POOL__INSTALL_PREFIX})
 
