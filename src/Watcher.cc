@@ -161,6 +161,16 @@ void ClientContainer::runThreadStratumJobConsume() {
       continue;
     }
 
+    consumeStratumJob(rkmessage);
+
+    /* Return message to rdkafka */
+    rd_kafka_message_destroy(rkmessage);
+  }
+
+  LOG(INFO) << "stop jstratum job consume thread";
+}
+
+void ClientContainer::consumeStratumJob(rd_kafka_message_t *rkmessage) {
     // check error
     if (rkmessage->err) {
       if (rkmessage->err == RD_KAFKA_RESP_ERR__PARTITION_EOF) {
@@ -170,7 +180,7 @@ void ClientContainer::runThreadStratumJobConsume() {
         //      << "[" << rkmessage->partition << "] "
         //      << " message queue at offset " << rkmessage->offset;
         // acturlly
-        continue;
+        return;
       }
     
       LOG(ERROR) << "consume error for topic " << rd_kafka_topic_name(rkmessage->rkt)
@@ -223,9 +233,6 @@ void ClientContainer::runThreadStratumJobConsume() {
                   << ", nBits: " << sjob->nBits_;
       }
     }
-  }
-
-  LOG(INFO) << "stop jstratum job consume thread";
 }
 
 void ClientContainer::run() {
