@@ -187,13 +187,13 @@ install(TARGETS
             statshttpd
             unittest
         DESTINATION
-            build)
+            ${POOL__INSTALL_PREFIX}/build)
 
 install(DIRECTORY
             docs
             install
         DESTINATION
-            .)
+            ${POOL__INSTALL_PREFIX})
 
 install(DIRECTORY
             ${CMAKE_BINARY_DIR}/run_blkmaker
@@ -207,6 +207,6 @@ install(DIRECTORY
             ${CMAKE_BINARY_DIR}/run_sserver
             ${CMAKE_BINARY_DIR}/run_statshttpd
         DESTINATION
-            build)
+            ${POOL__INSTALL_PREFIX}/build)
 
 include(CPack)
