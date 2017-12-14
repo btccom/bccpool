@@ -165,7 +165,7 @@ endif()
 
 # install prefix
 if(NOT POOL__INSTALL_PREFIX)
-  set(POOL__INSTALL_PREFIX "/work/btcpool.btc")
+  set(POOL__INSTALL_PREFIX "/work/btcpool.bcc")
 endif()
 message("-- Package Install Prefix (-DPOOL__INSTALL_PREFIX=<path>): ${POOL__INSTALL_PREFIX}")
 set(CMAKE_INSTALL_PREFIX ${POOL__INSTALL_PREFIX})
@@ -224,7 +224,7 @@ install(DIRECTORY
 if(POOL__GENERATE_DEB_PACKAGE)
   message("-- Generate Debian/Ubuntu software package (-DPOOL__GENERATE_DEB_PACKAGE=ON)")
   set(CPACK_GENERATOR "DEB")
-  set(CPACK_PACKAGE_NAME "btcpool-bitcoin")
+  set(CPACK_PACKAGE_NAME "btcpool-bitcoincash")
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "YihaoPeng yihao.peng@bitmain.com")
 
   # the dependencies
