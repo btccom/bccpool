@@ -154,8 +154,10 @@ option(POOL__WORK_WITH_STRATUM_SWITCHER
 if(POOL__WORK_WITH_STRATUM_SWITCHER)
   message("-- Work with Stratum Switcher (-DPOOL__WORK_WITH_STRATUM_SWITCHER=ON)")
   add_definitions(-DWORK_WITH_STRATUM_SWITCHER)
+  set(POOL__DEB_PACKNAME_POSTFIX "-withswitcher")
 else()
   message("-- Work without Stratum Switcher (-DPOOL__WORK_WITH_STRATUM_SWITCHER=OFF)")
+  set(POOL__DEB_PACKNAME_POSTFIX "")
 endif()
 
 
@@ -224,7 +226,7 @@ install(DIRECTORY
 if(POOL__GENERATE_DEB_PACKAGE)
   message("-- Generate Debian/Ubuntu software package (-DPOOL__GENERATE_DEB_PACKAGE=ON)")
   set(CPACK_GENERATOR "DEB")
-  set(CPACK_PACKAGE_NAME "btcpool-bitcoincash")
+  set(CPACK_PACKAGE_NAME "btcpool-bitcoincash${POOL__DEB_PACKNAME_POSTFIX}")
   set(CPACK_DEBIAN_PACKAGE_MAINTAINER "YihaoPeng yihao.peng@bitmain.com")
 
   # the dependencies
