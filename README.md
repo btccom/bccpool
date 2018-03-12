@@ -1,5 +1,13 @@
-BTCPool for Bitcoin Cash
+BTCPool for BitcoinCash (legacy branch)
 ==================
+
+The new works for BTCPool's BitcoinCash version is merged to https://github.com/btccom/btcpool. This legacy branch will no longer have new features and will only provide security updates.
+
+The new version of BTCPool is fully compatible with the old deployment. Only the construction method has changed. And it supported more SHA256 coins (BTC, BCH, SBTC, UBTC) in one branch. In addition, it supports RSK merge mining.
+
+The following is a description of the legacy branch:
+
+---------------------------
 
 BTCPool is backend system of [https://pool.btc.com](https://pool.btc.com).
 
